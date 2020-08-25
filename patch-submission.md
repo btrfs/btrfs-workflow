@@ -6,6 +6,7 @@ patch submission and review, but these tools will help us track the patch review
 status so we can be more effective with our review time.
 
 Mailinglist: linux-btrfs@vger.kernel.org
+
 Patch review queue: https://github.com/btrfs/linux/projects/1
 
 ## Prerequisites
@@ -64,8 +65,8 @@ directory to your `$PATH`.
 2. Review the patches.
 
 3. Move the issue to the appropriate stage in the project page.
-  * If the patches are ok, move them to the 'Ready to be merged' stage.
-  * If you had feedback, move them to 'Incoming queue, pending' stage.
+   * If the patches are ok, move them to the 'Ready to be merged' stage.
+   * If you had feedback, move them to 'Incoming queue, pending' stage.
 
 ## Maintainer workflow
 

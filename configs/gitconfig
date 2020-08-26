@@ -1,3 +1,5 @@
 [format]
 	coverLetter = auto
 	thread = shallow
+[pretty]
+	fixes = Fixes: %h (\"%s\")

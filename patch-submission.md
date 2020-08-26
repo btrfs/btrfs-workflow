@@ -9,6 +9,14 @@ Mailinglist: linux-btrfs@vger.kernel.org
 
 Patch review queue: https://github.com/btrfs/linux/projects/1
 
+## Git commit messages
+
+Follow the standard kernel commit message guidelines.  In addition, please keep the following in mind.
+
+- For lockdep fixes, Please include the lockdep message and stack trace in the commit.
+- If you are fixing a regression from a specific commit, it's nice to add the Fixes: tag.  You can accomplish this using the "pretty" format found in config/gitconfig, using `git show --format=pretty <bad commit>` to get the correct format for your Fixes: tag.
+- If you are addressing a specific Github issue, you can add References: <url to the issue>.  
+
 ## Prerequisites
 
 ### Github cli tools

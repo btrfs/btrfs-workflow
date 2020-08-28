@@ -11,11 +11,17 @@ Patch review queue: https://github.com/btrfs/linux/projects/1
 
 ## Git commit messages
 
-Follow the standard kernel commit message guidelines.  In addition, please keep the following in mind.
+Follow the standard kernel commit message guidelines.  In addition, please keep
+the following in mind.
 
-- For lockdep fixes, Please include the lockdep message and stack trace in the commit.
-- If you are fixing a regression from a specific commit, it's nice to add the Fixes: tag.  You can accomplish this using the "pretty" format found in config/gitconfig, using `git show --format=pretty <bad commit>` to get the correct format for your Fixes: tag.
-- If you are addressing a specific Github issue, you can add References: <url to the issue>.  
+- For lockdep fixes, Please include the lockdep message and stack trace in the
+  commit.
+- If you are fixing a regression from a specific commit, it's nice to add the
+  Fixes: tag.  You can accomplish this using the "fixes" alias found in
+  config/gitconfig, using `git fixes <bad commit>` to get the correct format for
+  your Fixes: tag.
+- If you are addressing a specific Github issue, you can add References: <url to
+  the issue>.
 
 ## Prerequisites
 
@@ -72,7 +78,9 @@ directory to your `$PATH`.
 
 2. Review the patches.
 
-3. Mark them with your reviewed tag if you accept, mark with your comment tag if you have comments and move to the "Incoming queue, pending" stage of the project.
+3. Mark them with your reviewed tag if you accept, mark with your comment tag if
+   you have comments and move to the "Incoming queue, pending" stage of the
+   project.
 
 ## Maintainer workflow
 

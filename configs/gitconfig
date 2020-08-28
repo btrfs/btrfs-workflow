@@ -1,5 +1,5 @@
 [format]
 	coverLetter = auto
 	thread = shallow
-[pretty]
-	fixes = Fixes: %h (\"%s\")
+[alias]
+	fixes = show -s --pretty='format:%h (\"%s\")'

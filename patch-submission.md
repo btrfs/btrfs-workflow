@@ -35,7 +35,7 @@ NOTE: You must install this on a box that can open a web browser, because you
 need to get the 0auth token.  This is fairly straightforward
 
 1. Install the gh package.
-2. run `gh repo view`.  This will launch the browser to the 0auth stuff, follow
+2. run `gh auth login`.  This will launch the browser to the 0auth stuff, follow
    the prompts.
 3. [OPTIONAL] If you have a headless machine that you do development on, you
    willl need to copy the 0auth token to this machine.  Copy

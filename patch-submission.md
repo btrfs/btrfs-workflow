@@ -20,8 +20,6 @@ the following in mind.
   Fixes: tag.  You can accomplish this using the "fixes" alias found in
   config/gitconfig, using `git fixes <bad commit>` to get the correct format for
   your Fixes: tag.
-- If you are addressing a specific Github issue, you can add References: <url to
-  the issue>.
 
 ## Prerequisites
 

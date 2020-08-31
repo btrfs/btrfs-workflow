@@ -39,7 +39,7 @@ need to get the 0auth token.  This is fairly straightforward
    the prompts.
 3. [OPTIONAL] If you have a headless machine that you do development on, you
    willl need to copy the 0auth token to this machine.  Copy
-   ~/.config/gh/hosts.yaml to the machine you will be using for development.
+   ~/.config/gh/hosts.yml to the machine you will be using for development.
 
 ### Git config options
 

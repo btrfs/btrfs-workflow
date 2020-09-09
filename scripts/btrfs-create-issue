@@ -5,6 +5,10 @@ _exit() {
 	exit 1
 }
 
+_json_escape() {
+	printf '%s' "$1" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))'
+}
+
 [ "$#" -ne 2 ] && _exit "btrfs-create-usage <MSGID> <SUBJECT>"
 
 gh --help > /dev/null
@@ -18,5 +22,17 @@ https://lore.kernel.org/linux-btrfs/${MSG_ID}/
 
 b4 am ${MSG_ID}"
 
-gh issue create --title "${2}" --project "Btrfs kernel patch review" \
-	-R "btrfs/linux" --body "${TEMPLATE}"
+read -p "Enter an existing issue to update (enter to create new): " issue
+
+if [ "$issue" == "" ]
+then
+	gh issue create --title "${2}" --project "Btrfs kernel patch review" \
+		-R "btrfs/linux" --body "${TEMPLATE}"
+else
+	TEMPLATE=$(_json_escape "${TEMPLATE}")
+	TITLE=$(_json_escape "${2}")
+	echo "{\"body\": ${TEMPLATE}}" |
+		gh api "repos/btrfs/linux/issues/${issue}/comments" --input=-
+	echo "{\"title\": ${TITLE}}" | \
+		gh api "repos/btrfs/linux/issues/${issue}" --input=-
+fi

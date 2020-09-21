@@ -7,7 +7,22 @@ status so we can be more effective with our review time.
 
 Mailinglist: linux-btrfs@vger.kernel.org
 
-Patch review queue: https://github.com/btrfs/linux/projects/1
+## Project page and tracking
+
+Patch review queue: https://github.com/btrfs/linux/projects/1, with the
+following workflow:
+
+1. send patch to mailinglist, open an issue in btrfs/linux (you can use helper scripts, see below)
+2. column *Incoming queue, pending* is for all new patches
+3. column *To review* is for patches that we need to focus on and that we want to get merged soon
+4. column *In misc-next* tracks all patches that pass review, testing and their final version landed in the branch 'misc-next'
+
+Patches come all the time, new features, fixes, urgent fixes, RFCs, patch
+iterations. The time of merge depends on the nature of the patches, phase of
+the development cycle so it may take time before the project card gets moved to
+'To review'.  You can continue looking at any patches, replying to mailing list
+with comments or Reviewed-by as usual, it'll be appreciated later when the time
+comes.
 
 ## Git commit messages
 

@@ -15,7 +15,7 @@ then
 	EMAIL=$1
 elif [ -d $1 ]
 then
-	EMAIL=$1/0000-cover-letter.patch
+	EMAIL=$(find $1 -name '*cover\-letter.patch')
 	[ -f $EMAIL ] || _exit "You must remember to use --cover-letter"
 else
 	_exit "Must specify a file or directory to send"

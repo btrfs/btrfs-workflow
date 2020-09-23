@@ -1,0 +1,31 @@
+#!/bin/sh
+# Add new issue to btrfs/fstests, from a formatted file
+#
+# Usage: fstests-issue-new < file
+#
+# Where the file is formatted like a mail (header, body):
+
+# Subject:
+# <empty line>
+# body
+# ...
+
+# Requires: gh (authenticated), formail
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+repo=btrfs/fstests
+
+if [ -z "$1" ]; then
+	echo "ERROR: $0 file"
+	exit 1
+fi
+fn="$1"
+
+title="`cat "$fn" | formail -c -z -x Subject`"
+body="`cat "$fn" | formail -I ''`"
+
+echo "SUBJECT: $title"
+
+gh issue create -R "${repo}" --title "${title}" --body "${body}"

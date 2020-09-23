@@ -1,0 +1,20 @@
+#!/bin/sh
+# Add a label to an issue in btrfs/linux repository
+# (label does not need to exist yet, will be created if necessary)
+
+if [ -z "$1" ]; then
+        echo "usage: $0 issue label"
+        exit 1
+fi
+
+repo=btrfs/linux
+issue="$1"
+shift
+
+if [ -z "$1" ]; then
+        echo "usage: $0 issue label"
+        exit 1
+fi
+label="$1"
+
+echo '{"labels":["'"$label"'"]}' | gh api "repos/$repo/issues/$issue/labels" --input=-

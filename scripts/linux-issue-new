@@ -1,0 +1,48 @@
+#!/bin/sh
+# Create new issue in btrfs/linux (tracking a patch)
+#
+# Usage (specify message id and subject manually):
+#
+#     linux-issue-new messageid subject
+#
+# or (piped from a mail or a file, using Message-id: and Subject:):
+#
+#     ... | linux-issue-new
+#
+#   eg. from your mail client
+#
+#   Requires: gh (authenticated), formail
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+if [ $# = 0 ]; then
+	echo "ISSUES: create new issue from mail on stdin"
+	tmp=`mktemp`
+	cat > "$tmp"
+	subject="`cat "$tmp" | formail -c -z -x Subject`"
+	msgid="`cat "$tmp" | formail -c -z -x Message-id | tr -d '<>'`"
+elif [ "$#" -ne 2 ]; then
+	echo "ERROR: Usage: $0 <MSGID> <SUBJECT>"
+	echo "ERROR: Usage: ... | $0"
+	exit 1
+else
+	msgid="$1"
+	subject="$2"
+fi
+
+lore="https://lore.kernel.org/linux-btrfs/${msgid}/
+
+b4 am ${msgid}"
+
+echo "ISSUES: about to create: ${subject} ([Y/n] 5 secs)"
+read -n 1 -t 5 q < /dev/tty
+if [ "$q" = 'y' -o "$q" = 'Y' -o "$q" = '' ]; then
+	echo "ISSUES: creating"
+	gh issue create -R "btrfs/linux" \
+		--project "Btrfs kernel patch review" \
+		--title "${subject}" \
+		--body "${lore}"
+else
+	echo "ISSUES: not creating"
+fi

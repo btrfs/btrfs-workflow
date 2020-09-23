@@ -1,0 +1,19 @@
+#!/bin/sh
+# Remove a label from issue in btrfs/linux repository
+
+if [ -z "$1" ]; then
+        echo "usage: $0 issue label"
+        exit 1
+fi
+
+repo=btrfs/linux
+issue="$1"
+shift
+
+if [ -z "$1" ]; then
+        echo "usage: $0 issue label"
+        exit 1
+fi
+label="$1"
+
+gh api -X DELETE "repos/$repo/issues/$issue/labels/$label"

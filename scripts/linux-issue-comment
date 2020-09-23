@@ -1,0 +1,59 @@
+#!/bin/sh
+# Add a comment to an existing issue from a (mail-like) formatted file
+#
+# Usage (issue specified on command line, file is the contents):
+#
+#     linux-issue-comment issue < comment
+#
+# Usage (pick issue number from the Issue: header):
+#
+#     ... | linux-issue-comment
+#
+# Where the file is formatted like a mail (header, body):
+#
+# Issue: number
+# <empty line>
+# body
+# ...
+#
+# Comment may time to write and gather information from various sources, you
+# don't need to remember the issue number
+
+repo=btrfs/fstests
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+_exit() {
+	echo $1
+	exit 1
+}
+
+_json_escape() {
+	printf '%s' "$1" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))'
+}
+
+if [ $# = 0 ]; then
+	echo "ISSUES: create new issue from formatted mail on stdin"
+	tmp=`mktemp`
+	cat > "$tmp"
+	issue="`cat "$tmp" | formail -c -z -x Issue | tr -d ' \n\r'`"
+	body="`cat "$tmp" | formail -I '' | tr -d '\r'`"
+	rm -- "$tmp"
+elif [ "$#" -ne 1 ]; then
+	echo "ERROR: $0 file"
+	exit 1
+else
+	issue="`cat "$1" | formail -c -z -x Issue | tr -d ' \n\r'`"
+	body="`cat "$1" | formail -I '' | tr -d '\r'`"
+fi
+
+if [ -z "$issue" ]; then
+	echo "ERROR: Issue: header not found or empty"
+	exit 1
+fi
+
+echo "Update issue: $issue"
+bodyesc=$(_json_escape "${body}")
+echo "{\"body\": ${bodyesc}}" |
+	gh api "repos/${repo}/issues/${issue}/comments" --input=-

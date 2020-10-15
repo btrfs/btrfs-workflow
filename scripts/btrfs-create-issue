@@ -35,4 +35,9 @@ else
 		gh api "repos/btrfs/linux/issues/${issue}/comments" --input=-
 	echo "{\"title\": ${TITLE}}" | \
 		gh api "repos/btrfs/linux/issues/${issue}" --input=-
+
+	# Remove label 'update' in case it's a new revision of the patch
+	label=update
+	repo=btrfs/linux
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/$label"
 fi

@@ -17,6 +17,12 @@ following workflow:
 3. column *To review* is for patches that we need to focus on and that we want to get merged soon
 4. column *In misc-next* tracks all patches that pass review, testing and their final version landed in the branch 'misc-next'
 
+There are 2 more columns that adjust the priorities of review:
+
+- *Urgent review* has patches that fix a serious bug and should be merged to an -rc
+- *Long-term, nice to have reviews* is for more intrusive patch series, eg. new
+  features, core updates
+
 Patches come all the time, new features, fixes, urgent fixes, RFCs, patch
 iterations. The time of merge depends on the nature of the patches, phase of
 the development cycle so it may take time before the project card gets moved to

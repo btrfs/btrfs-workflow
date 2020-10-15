@@ -1,0 +1,41 @@
+#!/bin/sh
+# Finish issue after patch has been added to misc-next
+#
+# - remove for-next label
+# - add misc-next label
+# - move to finished column
+
+if [ -z "$1" ]; then
+	echo "ERROR: usage: $0 issue"
+	exit 1
+fi
+
+issue="$1"
+# todo: validate issue exists
+repo=btrfs/linux
+
+echo "GITHUB: add label misc-next"
+echo '{"labels":["misc-next"]}' | gh api "repos/$repo/issues/$issue/labels" --input=-
+echo "GITHUB: remove label for-next"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/for-next"
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "repos/btrfs/linux/projects"
+# jq '.[].id'
+project=5220516
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "/projects/5220516/columns"
+# jq '.[].id'
+column1=10505384
+column2=10505389
+column3=10505398
+
+# NOTE: old preview API!
+card=$(gh api -H "Accept: application/vnd.github.starfox-preview" \
+	-X GET "repos/btrfs/linux/issues/$issue/events" | \
+	jq ".[0].project_card.id")
+
+# move card to 3d column
+echo "GITHUB: move card $card to 3rd column"
+echo '{"position":"top", "column_id": '"$column3"'}' |
+	gh api -H "Accept: application/vnd.github.inertia-preview+json" \
+		-X POST "projects/columns/cards/$card/moves" --input=-

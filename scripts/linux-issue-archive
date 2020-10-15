@@ -1,0 +1,36 @@
+#!/bin/sh
+# Archive an issue, after patch is merged and we don't need to track in project
+# anymore (eg. after pull request is merged)
+# - remove for-next label
+# - add misc-next label
+# - move to finished column
+
+if [ -z "$1" ]; then
+	echo "ERROR: usage: $0 issue"
+	exit 1
+fi
+
+issue="$1"
+# todo: validate issue exists
+repo=btrfs/linux
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "repos/btrfs/linux/projects"
+# jq '.[].id'
+project=5220516
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "/projects/5220516/columns"
+# jq '.[].id'
+column1=10505384
+column2=10505389
+column3=10505398
+
+# NOTE: old preview API!
+card=$(gh api -H "Accept: application/vnd.github.starfox-preview" \
+	-X GET "repos/btrfs/linux/issues/$issue/events" | \
+	jq ".[0].project_card.id")
+
+# move card to 3d column
+echo "GITHUB: archive card $card"
+echo '{"archived":true}' |
+	gh api -H "Accept: application/vnd.github.inertia-preview+json" \
+		-X PATCH "projects/columns/cards/$card" --input=-

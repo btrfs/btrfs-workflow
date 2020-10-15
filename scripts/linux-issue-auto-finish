@@ -1,0 +1,13 @@
+#!/bin/sh
+# Try to look up issue from mail subject and finish eventually
+
+match="$(linux-issue-match)"
+
+echo "$match"
+id=$(echo "$match" | awk '/^SEARCH:/ { next; } {print $1}')
+if ! [ -z "$id" ]; then
+	echo "FINISH: issue $id found, auto finish"
+	linux-issue-finish "$id"
+else
+	echo "FINISH: no corresponding issue found"
+fi

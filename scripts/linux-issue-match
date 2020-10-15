@@ -1,0 +1,10 @@
+#!/bin/sh
+# Lookup issue number by subject as found in the mail
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+subject="`formail -c -z -x Subject | sed -e 's/^[^]]*[]]//'`"
+
+echo "SEARCH: $subject"
+gh issue list --limit 10000 -R btrfs/linux | grep -i "$subject"

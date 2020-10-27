@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# We expect that we are run from the root of the tree we are in, so record this
+# directory to use for --root
+DIR=$(pwd)
+
+# cd into our path since we can exec from anywhere
+cd $(dirname $0)
+
+./checkpatch.pl --no-signoff -q --show-types --root $DIR -

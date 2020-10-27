@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: btrfs-setup-git-hooks <git dir>"
+	exit 1
+fi
+
+TARGET="$1/.git/hooks"
+
+if [ ! -e "$TARGET" ]; then
+	echo "Must point at a real git directory"
+	exit 1
+fi
+
+REALPATH=$(realpath $0)
+DIR=$(dirname $REALPATH)
+
+ln -s $DIR/btrfs-commit-msg $TARGET/commit-msg
+ln -s $DIR/btrfs-commit-msg $TARGET/applypatch-msg
+
+tee $TARGET/pre-commit $TARGET/pre-applypatch > /dev/null <<EOF
+#!/bin/bash
+
+git diff --cached | $DIR/btrfs-checkpatch
+EOF
+chmod u+x $TARGET/pre-commit $TARGET/pre-applypatch

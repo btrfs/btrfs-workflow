@@ -41,6 +41,10 @@ the following in mind.
   Fixes: tag.  You can accomplish this using the "fixes" alias found in
   config/gitconfig, using `git fixes <bad commit>` to get the correct format for
   your Fixes: tag.
+- If you get a spelling mistake flagged by the commit-msg hook that is not a
+  mistake, please add it to scripts/btrfs-dict and then run `make` in that
+  directory and commit the results so that we can all benefit from not having
+  false positives for spelling.
 
 ## Prerequisites
 
@@ -65,6 +69,11 @@ need to get the 0auth token.  This is fairly straightforward
 These should be set irregardless of wether you are going to use the helper
 scripts, simply copy the contents of configs/gitconfig into your ~/.gitconfig so
 you get properly formatted emails for submitting.
+
+Please run `btrfs-setup-git-hooks <git dir>` to add the appropriate git hooks to
+your tree.  This will help reduce the workload on the maintainers and reviewers
+of your code by ensuring that patches are in the proper format and that commit
+messages are spelled correctly.
 
 ## The btrfs helper scripts
 

@@ -19,7 +19,7 @@
 # Comment may time to write and gather information from various sources, you
 # don't need to remember the issue number
 
-repo=btrfs/fstests
+repo=btrfs/linux
 
 type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
 type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }

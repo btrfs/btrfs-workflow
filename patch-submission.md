@@ -30,17 +30,43 @@ the development cycle so it may take time before the project card gets moved to
 with comments or Reviewed-by as usual, it'll be appreciated later when the time
 comes.
 
+Labels are used to give a visual clue of what needs attention:
+
+* green labels
+   * **misc-next** - patch is in misc-next branch
+   * **for-next** - patch is in a topic branch for testing and added to the
+     linux-next branch but still needs reviews or testing
+   * **name ACK** - somebody under 'name' has reviewed the patch and marked the
+     issue as such, though the mailing list review notices are ok too
+   * **test sent** - as a response to 'test needed' red label
+* blue labels
+   * **partial** - part of a patches has been merged, the issue subject is for
+     the whole patchset and there are clones of the issue with patch group that's
+     being added separately (suffix to the subject like 1..10)
+   * **5.11** - target version number for patches that are postponed to that
+     development cycle, a temporary reminder after code freeze
+* yellow labels
+   * **name COMMENTS** - somebody under 'name' has comments that should be
+     addressed and possibly patches resent
+* red labels
+   * **update** - an update is expected, until then nothing may happen with the
+     patchset until a iteration is sent
+   * **test needed** - patch is fixing something that ought to have fstest
+     testcase, send it and change the label to **test sent**
+   * **tricky** - problems expected, testing is recommended to identify potential
+     fixes ahead of time, may also depend on other subsystems or tools
+
 ## Git commit messages
 
 Follow the standard kernel commit message guidelines.  In addition, please keep
 the following in mind.
 
-- For lockdep fixes, Please include the lockdep message and stack trace in the
-  commit.
 - If you are fixing a regression from a specific commit, it's nice to add the
   Fixes: tag.  You can accomplish this using the "fixes" alias found in
   config/gitconfig, using `git fixes <bad commit>` to get the correct format for
   your Fixes: tag.
+- For lockdep fixes, crash fixes, warnings, please include the lockdep message
+  and stack trace in the commit
 - If you get a spelling mistake flagged by the commit-msg hook that is not a
   mistake, please add it to scripts/btrfs-dict and then run `make` in that
   directory and commit the results so that we can all benefit from not having

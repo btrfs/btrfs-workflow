@@ -36,8 +36,11 @@ else
 	echo "{\"title\": ${TITLE}}" | \
 		gh api "repos/btrfs/linux/issues/${issue}" --input=-
 
-	# Remove label 'update' in case it's a new revision of the patch
-	label=update
+	# Remove labels relevant for a new revision: 'update', all ACKs
 	repo=btrfs/linux
-	gh api -X DELETE "repos/$repo/issues/$issue/labels/$label"
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/update"
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/kdave ACK"
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/josef ACK"
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/kdave COMMENTS"
+	gh api -X DELETE "repos/$repo/issues/$issue/labels/josef COMMENTS"
 fi

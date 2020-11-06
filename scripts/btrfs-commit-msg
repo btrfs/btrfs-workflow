@@ -9,5 +9,5 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-$CODESPELL $1
+$CODESPELL -I $DIR/ignore-list $1
 exit 0

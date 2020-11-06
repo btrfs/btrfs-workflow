@@ -7,4 +7,11 @@ DIR=$(pwd)
 # cd into our path since we can exec from anywhere
 cd $(dirname $0)
 
-./checkpatch.pl --no-signoff -q --show-types --root $DIR -
+if ! ./checkpatch.pl --no-signoff -q --show-types --root $DIR -; then
+	exec < /dev/tty
+	read -p "Checkpatch found errors, would you like to fix them up? (Yn) " -n 1 -r
+	if [[ $REPLY =~ [Nn]$ ]]; then
+		exit 0
+	fi
+	exit 1
+fi

@@ -3,13 +3,27 @@
 # We expect that we are run from the root of the tree we are in, so record this
 # directory to use for --root
 DIR=$(pwd)
+errors=0
+
+TMPFILE=$(mktemp)
+git diff --cached > $TMPFILE
 
 # cd into our path since we can exec from anywhere
-cd $(dirname $0)
+MYPATH=$(realpath $0)
+cd $(dirname $MYPATH)
 
-if ! ./checkpatch.pl --no-signoff -q --show-types --root $DIR -; then
+./checkpatch.pl --no-signoff -q --show-types --root $DIR $TMPFILE
+[ $? -ne 0 ] && errors=$(( errors + 1))
+
+cat $TMPFILE | grep -E "^\+" | sed 's/^\+//' | \
+	$DIR/scripts/kernel-doc -v -none -Werror '&STDIN'
+[ $? -ne 0 ] && errors=$(( errors + 1))
+
+rm -f $TMPFILE
+if [ $errors -ne 0 ]; then
 	exec < /dev/tty
 	read -p "Checkpatch found errors, would you like to fix them up? (Yn) " -n 1 -r
+	echo
 	if [[ $REPLY =~ [Nn]$ ]]; then
 		exit 0
 	fi

@@ -1,0 +1,68 @@
+#!/bin/bash
+# Update existing issue after a patchset update
+#
+# Usage (specify message id and subject manually):
+#
+#     linux-issue-update issue messageid subject
+#
+# or (piped from a mail or a file, using Message-id: and Subject:):
+#
+#     ... | linux-issue-new
+#
+# possible issues will be listed but need to be typed manually to verify
+#
+#   eg. from your mail client
+#
+#   Requires: gh (authenticated), formail
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+if [ $# = 0 ]; then
+	echo "ISSUES: update issue from mail on stdin"
+	tmp=`mktemp`
+	cat > "$tmp"
+	subject="`cat "$tmp" | formail -c -z -x Subject`"
+	msgid="`cat "$tmp" | formail -c -z -x Message-id | tr -d '<>'`"
+else
+	echo "ERROR: Usage: ... | $0"
+	exit 1
+fi
+
+_json_escape() {
+	printf '%s' "$1" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))'
+}
+
+echo "MSGID: $msgid"
+echo "SUBJECT: $subject"
+
+match="$(linux-issue-match < $tmp)"
+echo "ISSUES: possible related issues:"
+echo "$match"
+read -p "ISSUES: enter issue you want to update: " issue < /dev/tty
+echo "ISSUE: [$issue]"
+if ! [[ $issue =~ ^[0-9]+$ ]]; then
+	echo "ERROR: not an issue number"
+	exit 1
+fi
+
+echo "ISSUES: update issue with subject $subject"
+
+lore="https://lore.kernel.org/linux-btrfs/${msgid}/
+
+b4 am ${msgid}"
+
+lore=$(_json_escape "$lore")
+subject=$(_json_escape "$subject")
+
+echo "{\"body\": ${lore}}" |
+	gh api "repos/btrfs/linux/issues/${issue}/comments" --input=-
+echo "{\"title\": ${subject}}" | \
+	gh api "repos/btrfs/linux/issues/${issue}" --input=-
+
+repo=btrfs/linux
+gh api -X DELETE "repos/$repo/issues/$issue/labels/update"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/kdave ACK"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/josef ACK"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/kdave COMMENTS"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/josef COMMENTS"

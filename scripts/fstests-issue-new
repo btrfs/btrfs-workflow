@@ -1,7 +1,7 @@
 #!/bin/sh
 # Add new issue to btrfs/fstests, from a formatted file
 #
-# Usage: fstests-issue-new < file
+# Usage: fstests-issue-new file
 #
 # Where the file is formatted like a mail (header, body):
 

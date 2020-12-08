@@ -1,0 +1,7 @@
+#!/bin/sh
+# Lookup issue number by regex in subject (command line version)
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+
+echo "SEARCH: $1"
+gh issue list --limit 10000 -R btrfs/linux | grep -i "$1"

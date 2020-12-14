@@ -1,8 +1,10 @@
 #!/bin/sh
-# finish issue
+# Close issue after the patches are merged to linus' branch
+#
+# - archive card, remove it from project
+# - close issue
 # - remove for-next
-# - add misc-next
-# - move to finished column
+# - remove misc-next
 
 if [ -z "$1" ]; then
 	echo "ERROR: usage: $0 issue"
@@ -16,7 +18,7 @@ repo=btrfs/linux
 # Delete labels
 #
 echo "GITHUB: remove labels (for-next, misc-next)"
-gh api -X DELETE "repos/$repo/issues/$issue/labe ls/for-next"
+gh api -X DELETE "repos/$repo/issues/$issue/labels/for-next"
 gh api -X DELETE "repos/$repo/issues/$issue/labels/misc-next"
 
 #

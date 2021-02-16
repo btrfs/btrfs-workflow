@@ -8,11 +8,14 @@ errors=0
 TMPFILE=$(mktemp)
 git diff --cached > $TMPFILE
 
+make -j32 fs/btrfs/ > /dev/null || errors=$(( errors + 1 ))
+
 # cd into our path since we can exec from anywhere
 MYPATH=$(realpath $0)
 cd $(dirname $MYPATH)
 
-./checkpatch.pl --no-signoff -q --show-types --root $DIR $TMPFILE
+./checkpatch.pl --ignore FILE_PATH_CHANGES --no-signoff -q --show-types \
+	--root $DIR $TMPFILE
 [ $? -ne 0 ] && errors=$(( errors + 1))
 
 cat $TMPFILE | grep -E "^\+" | sed 's/^\+//' | \

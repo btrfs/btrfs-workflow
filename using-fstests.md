@@ -10,7 +10,9 @@ First checkout the [official fstests
 repo](git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git).  From there we
 recomend running
 
-`git remote-add btrfs https://github.com/btrfs/fstests.git`
+```
+git remote-add btrfs https://github.com/btrfs/fstests.git
+```
 
 in order to access our staging tree, but this part isn't strictly necessary.
 
@@ -33,7 +35,9 @@ you can use the `setup-lvm-fstests.sh` script found in the scripts/ directory in
 this repo, and it will carve up a single device into LV's and write the
 appropriate `local.config` to your fstests directory.  You run it like this
 
-`setup-lvm-fstests.sh xfstests/ /dev/nvme0n1`
+```
+setup-lvm-fstests.sh xfstests/ /dev/nvme0n1
+```
 
 which creates 10 10g LV's for your scratch pool and associated disks.  This
 means you need to have a minimum of 100g disk in order to use this script, if
@@ -59,7 +63,9 @@ MOUNT_OPTIONS="-o compress"
 
 Running fstests is relatively simple, generally you're going to start with
 
-`./check -g auto`
+```
+./check -g auto
+```
 
 to run all of the tests in the `auto` group.  A subset of tests always fail, we
 are doing our best to cull things that make no sense or fail all of the time,
@@ -83,13 +89,17 @@ currently failing.
 You can also run specific tests.  For example, if you regress `btrfs/011` you
 can simply run
 
-`./check btrfs/011`
+```
+./check btrfs/011
+```
 
 to iterate on your work instead of running the whole suite.  If you are
 relatively confident in your patch and you want to just do a quick smoke test
 then you can run
 
-`./check -g quick`
+```
+./check -g quick
+```
 
 instead.  However this should be reserved for more experienced developers, you
 don't get yelled at if your patch showed up a few hours later because you ran
@@ -122,15 +132,15 @@ number>.out to set your golden output.  Here's a list of best practices
 3. Make sure you use the command variables for your commands.  For example, do
    not do something like
 
-```
-xfs_io -f -c "pwrite 0 1M" file
-```
+   ```
+   xfs_io -f -c "pwrite 0 1M" file
+   ```
 
    instead use $XFS_IO_PROG, like so
 
-```
-$XFS_IO_PROG -f -c "pwrite 0 1M" file
-```
+   ```
+   $XFS_IO_PROG -f -c "pwrite 0 1M" file
+   ```
    
    If you need to know what the command variable name is, look at common/config
    in the fstests directory.  This has all of the commands with their names.  If
@@ -140,9 +150,9 @@ $XFS_IO_PROG -f -c "pwrite 0 1M" file
    bytenr's or speeds, fstests has filters.  Again, using xfs_io as an example,
    you would do something like the following
 
-```
-$XFS_IO_PROG -f -c "pwrite 0 1M" file | _filter_xfs_io
-```
+   ```
+   $XFS_IO_PROG -f -c "pwrite 0 1M" file | _filter_xfs_io
+   ```
 
    There are a variety of command filters, you can find them in common/filter
    and common/filter.btrfs.  Sometimes it is OK to redirect to /dev/null, but

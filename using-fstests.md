@@ -24,6 +24,17 @@ You need to have the following
    disk, but you can configure things manually if you wish.
 2. `./configure && make` in fstests.
 
+## Glossary
+
+- *scratch device*. This is the device that you can/will mkfs every single time
+  a test runs.  This doesn't happen with every test, but it can, it is fair game
+  to be completely blown away.
+- *test device*. This is the "main" device, it is not mkfs'ed by any of the
+  tests, it is just mounted and unmounted between tests.
+- *scratch pool*.  This is just a list of scratch devices, for btrfs tests that
+  test RAID or device add or removal, we need to be able to format a bunch of
+  disks to do the test, we use a pool to accomplish this.
+
 ## Configure fstests
 
 You need at least 2 disks for fstests to be useful, but for btrfs you really

@@ -22,9 +22,7 @@ You need to have the following
 
 1. A disk you can format.  If you use our script you need at least 100G sized
    disk, but you can configure things manually if you wish.
-2. `mkdir /mnt/test` for the `TEST_DIR`.
-3. `mkdir /mnt/scratch` for the `SCRATCH_DIR`.
-4. `./configure && make` in fstests.
+2. `./configure && make` in fstests.
 
 ## Configure fstests
 
@@ -43,6 +41,13 @@ which creates 10 10g LV's for your scratch pool and associated disks.  This
 means you need to have a minimum of 100g disk in order to use this script, if
 you don't have that you can simply adjust the size of the disks or number as
 needed.
+
+IF YOU DON'T USE THE CONFIG SCRIPT, do the following
+
+1. `mkdir /mnt/test && mkdir /mnt/scratch`.
+2. `mkfs.btrfs -f <your scratch dev>`.
+3. Edit your local.config in your fstests directory to match something like the
+   one generated for you by `setup-lvm-fstests.sh`.
 
 You can add more specific testing outside of the defaults, for example many of
 us use sections in order to run different mount options with the same machine.

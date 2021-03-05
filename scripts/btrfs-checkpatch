@@ -8,7 +8,7 @@ errors=0
 TMPFILE=$(mktemp)
 git diff --cached > $TMPFILE
 
-make -j32 fs/btrfs/ > /dev/null || errors=$(( errors + 1 ))
+make -j$(nproc) fs/btrfs/ > /dev/null || errors=$(( errors + 1 ))
 
 # cd into our path since we can exec from anywhere
 MYPATH=$(realpath $0)

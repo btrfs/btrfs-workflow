@@ -6,5 +6,6 @@ Btrfs workflow docs and supporting scripts
 * fstests.md  Workflow for new tests
 * using-fstests.md  General documentation on how to setup, configure, and use
   fstests, as well as how to write new tests.
+* cocci.md coccinelle scripts to look for known bug patterns, suggested cleanups, etc
 * scripts/*.  Supporting scripts for integrating the github issues into our email submission workflow.
 * configs/*.  Configs to unify how we do our patch submissions and such.

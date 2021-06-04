@@ -1,9 +1,12 @@
 #!/bin/sh
+# DO NOT USE
 # Archive an issue, after patch is merged and we don't need to track in project
 # anymore (eg. after pull request is merged)
-# - remove for-next label
-# - add misc-next label
-# - move to finished column
+# - close issue
+# - remove from project column
+
+echo "DO NOT USE"
+exit 1
 
 if [ -z "$1" ]; then
 	echo "ERROR: usage: $0 issue"
@@ -29,7 +32,7 @@ card=$(gh api -H "Accept: application/vnd.github.starfox-preview" \
 	-X GET "repos/btrfs/linux/issues/$issue/events" | \
 	jq ".[0].project_card.id")
 
-# move card to 3d column
+# Set card to archived
 echo "GITHUB: archive card $card"
 echo '{"archived":true}' |
 	gh api -H "Accept: application/vnd.github.inertia-preview+json" \

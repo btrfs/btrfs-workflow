@@ -5,6 +5,7 @@ _exit() {
 	exit 1
 }
 
+DIR=$(dirname $0)
 [ "$#" -ne 1 ] && _exit "Must specify a file or directory to send"
 
 MSG_ID=""
@@ -33,4 +34,4 @@ SUBJECT=$(egrep '^Subject:' ${EMAIL} | head -n1 | cut -c 10-)
 [ $? -ne 0 ] && _exit "Subject wasn't present in the patch provided"
 
 git send-email $1 || _exit "Couldn't send the email"
-btrfs-create-issue "${MSG_ID}" "${SUBJECT}"
+"$DIR"/btrfs-create-issue "${MSG_ID}" "${SUBJECT}"

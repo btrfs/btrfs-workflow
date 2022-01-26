@@ -7,11 +7,12 @@
 
 here=`pwd`
 base=`readlink -f $(dirname "$0")`
+where="${1:-}"
 
 for cocci in "$base"/*.cocci; do
 	echo "=== Running $cocci"
 	out="$cocci".diff
-	spatch -sp_file "$cocci" -dir . -include_headers -quiet -very-quiet -j 4 2>&1 > "$out"
+	spatch -sp_file "$cocci" -dir "$where" -include_headers -quiet -very-quiet -j 4 2>&1 > "$out"
 	if [ -s "$out" ]; then
 		echo "Something found ($out)"
 	else

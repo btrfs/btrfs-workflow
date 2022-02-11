@@ -2,7 +2,7 @@
 
 This is a document to describe how to actually use fstests effectively.
 Documentation on how the btrfs team handles results and fixes can be found
-[here](https://github.com/btrfs/btrfs-workflow/fstests.md).
+[here](https://github.com/btrfs/btrfs-workflow/blob/master/fstests.md).
 
 ## Checkout the code
 
@@ -16,7 +16,7 @@ git remote-add btrfs https://github.com/btrfs/fstests.git
 
 in order to access our staging tree, but this part isn't strictly necessary.
 
-## Prerequesites
+## Prerequisites
 
 You need to have the following
 

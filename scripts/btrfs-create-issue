@@ -27,7 +27,9 @@ read -p "Enter an existing issue to update (enter to create new): " issue
 if [ "$issue" == "" ]
 then
 	gh issue create --title "${2}" --project "Btrfs kernel patch review" \
-		-R "btrfs/linux" --body "${TEMPLATE}"
+		-R "btrfs/linux" --body "${TEMPLATE}" \
+	|| (echo "Skipping adding to review queue" \
+	    && gh issue create --title "${2}" -R "btrfs/linux" --body "${TEMPLATE}")
 else
 	TEMPLATE=$(_json_escape "${TEMPLATE}")
 	TITLE=$(_json_escape "${2}")

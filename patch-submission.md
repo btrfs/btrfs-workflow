@@ -15,7 +15,7 @@ following workflow:
 1. send patch to mailinglist, open an issue in btrfs/linux (you can use helper scripts, see below)
 2. column *Incoming queue, pending* is for all new patches
 3. column *To review* is for patches that we need to focus on and that we want to get merged soon
-4. column *In misc-next* tracks all patches that pass review, testing and their final version landed in the branch 'misc-next'
+4. column *In misc-next* tracks all patches that pass review, testing and their final version landed in the branch ['misc-next'](https://github.com/kdave/btrfs-devel/tree/misc-next)
 
 There are 2 more columns that adjust the priorities of review:
 

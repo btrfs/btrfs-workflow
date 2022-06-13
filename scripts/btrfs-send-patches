@@ -6,21 +6,37 @@ _exit() {
 }
 
 DIR=$(dirname $0)
-[ "$#" -ne 1 ] && _exit "Must specify a file or directory to send"
 
 MSG_ID=""
 EMAIL=""
+skip_issue_arg=0
 
-if [ -f $1 ]
-then
-	EMAIL=$1
-elif [ -d $1 ]
-then
-	EMAIL=$(find $1 -name '*cover\-letter.patch')
-	[ -f $EMAIL ] || _exit "You must remember to use --cover-letter"
-else
-	_exit "Must specify a file or directory to send"
-fi
+send_email_args=()
+for i in "$@"; do
+	# Catch '-i'|'--issue' and remove them from the argument list
+	if [ "$skip_issue_arg" == "1" ]; then
+		issue="$i"
+		skip_issue_arg=0
+		continue;
+	fi
+	if [ "$i" == "-i" -o "$i" == "--issue" ]; then
+		skip_issue_arg=1
+		continue
+	fi
+
+	# Catch the first directory/file as the email
+	if [ -f "$i" -a -z "$EMAIL" ]; then
+		EMAIL="$i"
+	fi
+	if [ -d "$i" -a -z "$EMAIL" ]; then
+		EMAIL=$(find $1 -name '*cover\-letter.patch')
+		[ -f $EMAIL ] || _exit "You must remember to use --cover-letter"
+	fi
+	# All the other parameters will be passed to git-send-email
+	send_email_args+=("$i")
+done
+
+[ -z "$EMAIL" ] && _exit "Must specify a file or directory to send"
 
 MSG_ID=$(grep 'Message-Id' ${EMAIL})
 [ $? -ne 0 ] && _exit "Message-Id wasn't present in the patch provided"
@@ -33,5 +49,10 @@ MSG_ID=$(echo ${MSG_ID} | \
 SUBJECT=$(egrep '^Subject:' ${EMAIL} | head -n1 | cut -c 10-)
 [ $? -ne 0 ] && _exit "Subject wasn't present in the patch provided"
 
-git send-email $1 || _exit "Couldn't send the email"
-"$DIR"/btrfs-create-issue "${MSG_ID}" "${SUBJECT}"
+# All the remaining arguments are passed to git send-email directly
+git send-email ${send_email_args[@]} || _exit "Couldn't send the email"
+if [ -z "$issue" ]; then
+	"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}"
+else
+	"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}" -i "$issue"
+fi

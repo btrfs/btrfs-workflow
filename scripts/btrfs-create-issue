@@ -9,30 +9,61 @@ _json_escape() {
 	printf '%s' "$1" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))'
 }
 
-[ "$#" -ne 2 ] && _exit "btrfs-create-usage <MSGID> <SUBJECT>"
-
 gh --help > /dev/null
 [ $? -ne 0 ] && _exit "Please install gh to use this tool (https://cli.github.com/manual/installation)"
 
-MSG_ID=$1
+TEMP=$(getopt -o 'i:m:t:' --long 'issue:,message-id:,title:' -n 'btrfs-create-issue' -- "$@")
+
+[ $? -ne 0 ] && _exit "getopt failed"
+
+eval set -- "$TEMP"
+unset TEMP
+
+while true; do
+	case "$1" in
+		'-i'|'--issue')
+			issue="$2"
+			shift 2
+			continue
+		;;
+		'-m'|'--message-id')
+			messageid="$2"
+			shift 2
+			continue
+		;;
+		'-t'|'--title')
+			title="$2"
+			shift 2
+			continue
+		;;
+		'--')
+			shift
+			break
+		;;
+		*)
+			_exit "getopt failed"
+		;;
+	esac
+done
+
+[ -z "$title" ] && _exit "-t/--title must be specified"
+[ -z "$messageid" ] && _exit "-m/--message-id must be specified"
 
 TEMPLATE="Link to patches
 
-https://lore.kernel.org/linux-btrfs/${MSG_ID}/
+https://lore.kernel.org/linux-btrfs/${messageid}/
 
-b4 am ${MSG_ID}"
-
-read -p "Enter an existing issue to update (enter to create new): " issue
+b4 am ${messageid}"
 
 if [ "$issue" == "" ]
 then
-	gh issue create --title "${2}" --project "Btrfs kernel patch review" \
+	gh issue create --title "${title}" --project "Btrfs kernel patch review" \
 		-R "btrfs/linux" --body "${TEMPLATE}" \
 	|| (echo "Skipping adding to review queue" \
-	    && gh issue create --title "${2}" -R "btrfs/linux" --body "${TEMPLATE}")
+	    && gh issue create --title "${title}" -R "btrfs/linux" --body "${TEMPLATE}")
 else
 	TEMPLATE=$(_json_escape "${TEMPLATE}")
-	TITLE=$(_json_escape "${2}")
+	TITLE=$(_json_escape "${title}")
 	echo "{\"body\": ${TEMPLATE}}" |
 		gh api "repos/btrfs/linux/issues/${issue}/comments" --input=-
 	echo "{\"title\": ${TITLE}}" | \

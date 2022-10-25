@@ -10,14 +10,18 @@ base=`readlink -f $(dirname "$0")`
 where="${1:-}"
 jobs=4
 
-for cocci in "$base"/*.cocci; do
-	echo "=== Running $cocci"
-	out="$cocci".diff
-	spatch -sp_file "$cocci" -dir "$where" -include_headers -quiet -very-quiet -j $jobs 2>&1 > "$out"
-	if [ -s "$out" ]; then
-		echo "Something found ($out)"
-	else
-		echo "Nothing found"
-		rm -- "$out"
-	fi
-done
+cocci="$2"
+if ! [ -f "$cocci" ]; then
+	echo "ERROR: usage: $0 directory file.ccc"
+	exit 1
+fi
+
+echo "=== Running $cocci"
+out="$cocci".diff
+spatch -sp_file "$cocci" -dir "$where" -include_headers -quiet -very-quiet -j $jobs 2>&1 > "$out"
+if [ -s "$out" ]; then
+	echo "Something found ($out)"
+else
+	echo "Nothing found"
+	rm -- "$out"
+fi

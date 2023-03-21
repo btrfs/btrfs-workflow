@@ -5,7 +5,7 @@ _exit() {
 	exit 1
 }
 
-DIR=$(dirname $0)
+DIR=$(dirname $(readlink -f $0))
 
 MSG_ID=""
 EMAIL=""

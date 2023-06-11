@@ -38,11 +38,11 @@ done
 
 [ -z "$EMAIL" ] && _exit "Must specify a file or directory to send"
 
-MSG_ID=$(grep 'Message-Id' ${EMAIL})
+MSG_ID=$(grep -i 'Message-Id' ${EMAIL})
 [ $? -ne 0 ] && _exit "Message-Id wasn't present in the patch provided"
 
 MSG_ID=$(echo ${MSG_ID} | \
-	python -c 'import re,sys; print(re.match("Message-Id: <(.*)>", sys.stdin.read())[1])')
+	python -c 'import re,sys; print(re.match("Message-Id: <(.*)>", sys.stdin.read(), re.IGNORECASE)[1])')
 [ $? -ne 0 ] && _exit "Message-Id couldn't be extracted from the patch provided"
 
 # Just incase somebody includes 'Subject:' in their commit body

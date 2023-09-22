@@ -1,0 +1,9 @@
+#!/bin/sh
+# List issues from btrfs/linux
+
+type -p gh > /dev/null || { echo "ERROR: gh tool not found"; exit 1; }
+type -p formail > /dev/null || { echo "ERROR: formail tool not found"; exit 1; }
+
+
+echo "List issues:"
+gh issue list --limit 100 -R btrfs/linux

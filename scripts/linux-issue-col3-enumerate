@@ -1,0 +1,23 @@
+#!/bin/sh
+# Enumerate issue numbers from column 3, you feed it to linux-issue-close
+
+repo=btrfs/linux
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "repos/btrfs/linux/projects"
+# jq '.[].id'
+project=5220516
+
+# gh api -H "Accept: application/vnd.github.inertia-preview+json" -X GET "/projects/5220516/columns"
+# jq '.[].id'
+column1=10505384
+column2=10505389
+column3=10505398
+
+for url in $(gh api -H "Accept: application/vnd.github+json" \
+		-H "X-GitHub-Api-Version: 2022-11-28" \
+		-X GET "/projects/columns/$column3/cards" | jq -r ".[].content_url"); do
+	#echo "URL: $url"
+	#echo "ISSUE:" $(basename "$url")
+	echo $(basename "$url")
+done
+

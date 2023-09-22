@@ -1,0 +1,12 @@
+#!/bin/sh
+# Close all issues in colum 3, use with care!
+
+echo "All issues in col 3, really close [yes/N]?"
+echo $(./linux-issue-col3-enumerate)
+read tmp
+if [ "$tmp" = 'yes' ]; then
+	for issue in $(linux-issue-col3-enumerate); do
+		echo "ISSUE $issue to close"
+		linux-issue-close "$issue"
+	done
+fi

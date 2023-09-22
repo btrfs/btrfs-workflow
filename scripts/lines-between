@@ -1,0 +1,10 @@
+#!/bin/sh
+# Usage: $0 FROM TO
+# Filter to print lines from a file between markers (excluding markers)
+
+awk "
+BEGIN { doprint=0; }
+/$1/ { doprint=1; }
+/$2/ { doprint=0; }
+doprint == 1 { print }
+"

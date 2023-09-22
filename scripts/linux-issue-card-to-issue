@@ -1,0 +1,10 @@
+#!/bin/sh
+# Convert issue number to project card(s) (WIP)
+
+issue=${1:-0}
+
+card=89693595
+
+# magic
+gh api -H "Accept: application/vnd.github.starfox-preview" \
+	"/projects/columns/cards/$card"

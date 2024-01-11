@@ -32,7 +32,7 @@ they're urgent fixes that need to go into Linus quickly.
 5. Await clean CI run and patch reviews.
 6. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
    reset --merge HEAD~1` to strip off the `ci` branch and merge your code into
-   the base branch, either through the github UI or via git push.
+   the base branch with a `git push`.
 
 ## Who should review my patches?
 

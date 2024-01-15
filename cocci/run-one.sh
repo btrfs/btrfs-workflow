@@ -1,5 +1,5 @@
 #!/bin/sh
-# Usage: $0 [directory]
+# Usage: $0 [directory] script.cocci
 #
 # Looks for the scripts in the symlink base directory, so run this from your
 # sources a specify full path to the script. The results are in a .diff file of
@@ -7,12 +7,12 @@
 
 here=`pwd`
 base=`readlink -f $(dirname "$0")`
-where="${1:-}"
+where="${1:-.}"
 jobs=4
 
 cocci="$2"
 if ! [ -f "$cocci" ]; then
-	echo "ERROR: usage: $0 directory file.ccc"
+	echo "ERROR: usage: $0 directory script.cocci"
 	exit 1
 fi
 

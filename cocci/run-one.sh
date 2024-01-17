@@ -16,9 +16,16 @@ if ! [ -f "$cocci" ]; then
 	exit 1
 fi
 
+virt=
+if grep -q 'virtual patch' "$cocci"; then
+	virt='-D patch'
+elif grep -q 'virtual report' "$cocci"; then
+	virt='-D report'
+fi
+
 echo "=== Running $cocci"
 out="$cocci".diff
-spatch -sp_file "$cocci" -dir "$where" -include_headers -quiet -very-quiet -j $jobs 2>&1 > "$out"
+spatch $virt -sp_file "$cocci" -dir "$where" -include_headers -quiet -very-quiet -j $jobs 2>&1 > "$out"
 if [ -s "$out" ]; then
 	echo "Something found ($out)"
 else

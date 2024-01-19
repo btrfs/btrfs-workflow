@@ -28,6 +28,7 @@ they're urgent fixes that need to go into Linus quickly.
 1. Write code off of your base.
 2. Merge the `ci` branch from the btrfs tree.
 3. Push to your local repo, submit a pull request against the base branch.
+3.1. Skip 2 and submit the pull request against the branch `ci`
 4. Submit your patches to linux-btrfs@vger.kernel.org.
 5. Await clean CI run and patch reviews.
 6. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
@@ -78,3 +79,27 @@ For outside contributors any one of the committing members may merge their
 patches, but must have an additional `Reviewed-by` from another committing
 member.  The committing member must still follow the same process to make sure
 the code is properly tested and validated before merging.
+
+## Misc
+
+Do not rebase the base branch unless there's a reason for it. A good reason
+is a merge conflict resolution that exists outside of `for-next`, e.g. during
+merge window resolved by Linus.
+
+Rebases of the `for-next` will happen on each Monday after a release of a `rc`
+kernel. Patches merged meanwhile to `master` will disappear from `for-next` if
+duplicated.
+
+Note that changes to patches in the middle of the branch are two fold:
+
+- code changes, `git rebase` will handle that, either cleanly or with a
+  reported conflict
+
+- changelog, this is **not handled** by git rebase and local patch may override
+  the one in the base branch, thus losing any previous changes
+
+Please be careful and check twice before pushing. In case you mess something up
+it's still possible to revert to previous state. Make a local copy of any
+relevant branch, read output of `git push` command and note commit ids,
+use `git reflog` to see previous contents of the branches. This should
+provide enough data points to resolve the conflicts and prevent losses.

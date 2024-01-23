@@ -28,12 +28,13 @@ they're urgent fixes that need to go into Linus quickly.
 1. Write code off of your base.
 2. Merge the `ci` branch from the btrfs tree.
 3. Push to your local repo, submit a pull request against the base branch.
-3.1. Skip 2 and submit the pull request against the branch `ci`
+3.1. Skip 2 and submit the pull request against the branch `ci` (agains `btrfs/linux`)
 4. Submit your patches to linux-btrfs@vger.kernel.org.
 5. Await clean CI run and patch reviews.
 6. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
    reset --merge HEAD~1` to strip off the `ci` branch and merge your code into
    the base branch with a `git push`.
+7. Close the issue and remove the project card on the project page https://github.com/btrfs/linux/projects/1
 
 ## Who should review my patches?
 
@@ -72,6 +73,7 @@ do a fast forward `git push`.  For fixups utilize `git rebase -i` appropriately.
 6. `git push origin +<base>:<base>`
 7. Pray you didn't break anything.
 8. Let everybody know you're done force pushing.
+9. Notification about `for-next` update is posted on the `btrfs-for-next` slack channel
 
 ## What about outside contributors?
 
@@ -88,7 +90,7 @@ merge window resolved by Linus.
 
 Rebases of the `for-next` will happen on each Monday after a release of a `rc`
 kernel. Patches merged meanwhile to `master` will disappear from `for-next` if
-duplicated.
+duplicated. Anothe rebase could happen right after Linus merges the last pull request.
 
 Note that changes to patches in the middle of the branch are two fold:
 

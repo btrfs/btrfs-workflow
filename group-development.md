@@ -35,6 +35,7 @@ they're urgent fixes that need to go into Linus quickly.
    reset --merge HEAD~1` to strip off the `ci` branch and merge your code into
    the base branch with a `git push`.
 7. Close the issue and remove the project card on the project page https://github.com/btrfs/linux/projects/1
+8. Close the pull request at https://github.com/btrfs/linux/pulls (and eventually all your stale pull requests)
 
 ## Who should review my patches?
 

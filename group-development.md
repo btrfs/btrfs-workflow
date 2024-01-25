@@ -106,3 +106,10 @@ it's still possible to revert to previous state. Make a local copy of any
 relevant branch, read output of `git push` command and note commit ids,
 use `git reflog` to see previous contents of the branches. This should
 provide enough data points to resolve the conflicts and prevent losses.
+
+## Build-only checks
+
+Optionally you can let your branch get build-tested on x86\_64 with various
+config option combinations. Submit a pull request against branch `build`. This
+will run on the github hosted runners, more PRs can be sent in parallel.
+The same checks can be also run locally, replicate the steps in `.github/workflows/build.yml`.

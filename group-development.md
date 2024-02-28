@@ -22,17 +22,14 @@ they're urgent fixes that need to go into Linus quickly.
 
 ## tl;dr developer workflow
 
-1. Write code off of your base.
-2. Merge the `ci` branch from the btrfs tree.
-3. Push to your local repo, submit a pull request against the base branch.
-3.1. Skip 2 and submit the pull request against the branch `ci` (against `btrfs/linux`)
-4. Submit your patches to linux-btrfs@vger.kernel.org.
-5. Await clean CI run and patch reviews.
-6. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
+1. Write code off of your base
+2. Submit the pull request against the branch `ci` (against `btrfs/linux`)
+2.1 Alternatively you can also merge the `ci` branch and then send the pull request
+3. Submit your patches to linux-btrfs@vger.kernel.org.
+4. Test your changes, either on your testing setup or on the github CI
+5. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
    reset --merge HEAD~1` to strip off the `ci` branch and merge your code into
    the base branch with a `git push`.
-7. Close the issue and remove the project card on the project page https://github.com/btrfs/linux/projects/1
-8. Close the pull request at https://github.com/btrfs/linux/pulls (and eventually all your stale pull requests)
 
 ## Who should review my patches?
 
@@ -89,7 +86,9 @@ merge window resolved by Linus.
 
 Rebases of the `for-next` will happen on each Monday after a release of a `rc`
 kernel. Patches merged meanwhile to `master` will disappear from `for-next` if
-duplicated. Anothe rebase could happen right after Linus merges the last pull request.
+duplicated.
+
+Another rebase could happen right after Linus merges the last pull request.
 
 Note that changes to patches in the middle of the branch are two fold:
 
@@ -111,3 +110,5 @@ Optionally you can let your branch get build-tested on x86\_64 with various
 config option combinations. Submit a pull request against branch `build`. This
 will run on the github hosted runners, more PRs can be sent in parallel.
 The same checks can be also run locally, replicate the steps in `.github/workflows/build.yml`.
+
+Automatic build check is set up for for pushing branch `for-next`.

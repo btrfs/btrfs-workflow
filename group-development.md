@@ -12,13 +12,10 @@ The repo for this is
 
 [https://github.com/btrfs/linux](https://github.com/btrfs/linux)
 
-We are going to use two branches
+We are going to use one main branch
 
- - `for-next`: This is code that needs testing and will go into the next merge
+- `for-next`: This is code that needs testing and will go into the next merge
    window.
- - `for-linus`: This is the code that needs to go to Linus in the next pull
-   request.  When we get close to the merge window `for-next` will become
-   `for-linus`.
 
 Generally speaking developers will be checking things into `for-next` unless
 they're urgent fixes that need to go into Linus quickly.
@@ -28,7 +25,7 @@ they're urgent fixes that need to go into Linus quickly.
 1. Write code off of your base.
 2. Merge the `ci` branch from the btrfs tree.
 3. Push to your local repo, submit a pull request against the base branch.
-3.1. Skip 2 and submit the pull request against the branch `ci` (agains `btrfs/linux`)
+3.1. Skip 2 and submit the pull request against the branch `ci` (against `btrfs/linux`)
 4. Submit your patches to linux-btrfs@vger.kernel.org.
 5. Await clean CI run and patch reviews.
 6. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
@@ -44,8 +41,9 @@ should be appropriately included, but you must have a `Reviewed-by` from a
 committing member in order to commit your own code.
 
 For big features you must have at least 2 `Reviewed-by`'s from a committing
-member in order to commit your code.  You must also have fstests that will test
-your code in the CI that run when you test your code.
+member in order to commit your code.  You **must** also have fstests that will test
+your code in the CI that run when you test your code. Put that to the branch
+*staging* in our `btrfs/fstests.git` repository (it's pulled before each CI run).
 
 ## What happens if I race with another developer?
 

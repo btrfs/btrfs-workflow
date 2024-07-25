@@ -13,15 +13,10 @@ Patch review queue: https://github.com/btrfs/linux/projects/1, with the
 following workflow:
 
 1. send patch to mailinglist, open an issue in btrfs/linux (you can use helper scripts, see below)
-2. column *Incoming queue, pending* is for all new patches
-3. column *To review* is for patches that we need to focus on and that we want to get merged soon
-4. column *In misc-next* tracks all patches that pass review, testing and their final version landed in the branch ['misc-next'](https://github.com/kdave/btrfs-devel/tree/misc-next)
+2. column *Incoming queue* is for all new patches
+3. column *Review wanted* is for patches that we need to focus on and that we want to get merged soon
 
-There are 2 more columns that adjust the priorities of review:
-
-- *Urgent review* has patches that fix a serious bug and should be merged to an -rc
-- *Long-term, nice to have reviews* is for more intrusive patch series, eg. new
-  features, core updates
+There's one more column *Bugs, CI issues* to make some bugs or problems more visible, it's optinoal.
 
 Patches come all the time, new features, fixes, urgent fixes, RFCs, patch
 iterations. The time of merge depends on the nature of the patches, phase of
@@ -33,17 +28,11 @@ comes.
 Labels are used to give a visual clue of what needs attention:
 
 * green labels
-   * **misc-next** - patch is in misc-next branch
-   * **for-next** - patch is in a topic branch for testing and added to the
-     linux-next branch but still needs reviews or testing
    * **name ACK** - somebody under 'name' has reviewed the patch and marked the
      issue as such, though the mailing list review notices are ok too
    * **test sent** - as a response to 'test needed' red label
 * blue labels
-   * **partial** - part of a patches has been merged, the issue subject is for
-     the whole patchset and there are clones of the issue with patch group that's
-     being added separately (suffix to the subject like 1..10)
-   * **5.11** - target version number for patches that are postponed to that
+   * **6.11** - target version number for patches that are postponed to that
      development cycle, a temporary reminder after code freeze
 * yellow labels
    * **name COMMENTS** - somebody under 'name' has comments that should be
@@ -53,8 +42,6 @@ Labels are used to give a visual clue of what needs attention:
      patchset until a iteration is sent
    * **test needed** - patch is fixing something that ought to have fstest
      testcase, send it and change the label to **test sent**
-   * **tricky** - problems expected, testing is recommended to identify potential
-     fixes ahead of time, may also depend on other subsystems or tools
 
 ## Git commit messages
 
@@ -127,14 +114,14 @@ directory to your `$PATH`.
 
 ## Reviewer workflow
 
-1. Check the project page for anything in the 'To Review' queue, pick a series
+1. Check the project page for anything in the 'Review wanted' queue, pick a series
    to review.
 
 2. Review the patches.
 
-3. Mark them with your reviewed tag if you accept, mark with your comment tag if
-   you have comments and move to the "Incoming queue, pending" stage of the
-   project.
+3. Send your reply to the mailinglist.
+
+4. If there are enough reviews, add the patches to branch **for-next**
 
 ## Maintainer workflow
 
@@ -142,6 +129,4 @@ directory to your `$PATH`.
    for the next merge window, so tags are used so developers know when to expect
    their patches to be merged.
 
-2. If it's merged into misc-next, move it to the 'In misc-next' stage.
-
-3. Once the series is in Linus's tree the issue can be closed.
+2. Once the patches are in **for-next** close the issue

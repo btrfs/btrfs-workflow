@@ -2,34 +2,11 @@
 
 Staging repository: [git://github.com/btrfs/fstests](https://github.com/btrfs/fstests)
 
-The branch **staging** contains all the tests that have fixes in **for-next**.
-This branch is supposed to be used by several people and should allow to run
-the whole test suite without crashing the machine or adding noise to the test
-results.
+The branch **staging** contains CI fixups and support and may contain test
+cases before they merged upstream.  The branch is rebased on top of upstream
+**for-next** version is submitted and needs to be replaced. Use `git pull --rebase` to update.
 
-The branch will be rebased once tests are merged upstream or if a new patch
-version is submitted and needs to be replaced. Use `git pull --rebase` to
-update.
-
-## Submit fstests with fixes
-
-The whole idea is to have tests available at the time a fix is submitted and we
-don't have to wait for the review and merge round. Minor issues are acceptable
-as long as the test is functional.
-
-Patches that are ready for review and merge should be sent to
-[fstests@vger.kernel.org](https://lore.kernel.org/fstests/).
-
-## New test numbers
-
-To avoid clashes in test numbers, pick a high (1000+) random one that's not
-used, please.  The final test number is determined at upstream merge time. The
-pending test number should remain unchanged so we can use it for reference in
-bug reports.
-
-Conflicting test numbers can be resolved by saving the patch as a file and then
-changing the number string inside the patch file. The remainig trivial conflict
-will be in the 'groups' file.
+Patches should be sent upstream to [fstests@vger.kernel.org](https://lore.kernel.org/fstests/).
 
 # Bug reports
 

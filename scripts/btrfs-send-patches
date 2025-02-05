@@ -51,8 +51,13 @@ SUBJECT=$(grep -E '^Subject:' ${EMAIL} | head -n1 | cut -c 10-)
 
 # All the remaining arguments are passed to git send-email directly
 git send-email ${send_email_args[@]} || _exit "Couldn't send the email"
-if [ -z "$issue" ]; then
-	"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}"
-else
-	"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}" -i "$issue"
+
+echo "NOTE: no issue created at github"
+
+if false; then
+	if [ -z "$issue" ]; then
+		"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}"
+	else
+		"$DIR"/btrfs-create-issue -m "${MSG_ID}" -t "${SUBJECT}" -i "$issue"
+	fi
 fi

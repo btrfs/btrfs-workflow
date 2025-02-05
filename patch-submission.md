@@ -7,42 +7,6 @@ status so we can be more effective with our review time.
 
 Mailinglist: linux-btrfs@vger.kernel.org
 
-## Project page and tracking
-
-Patch review queue: https://github.com/btrfs/linux/projects/1, with the
-following workflow:
-
-1. send patch to mailinglist, open an issue in btrfs/linux (you can use helper scripts, see below)
-2. column *Incoming queue* is for all new patches
-3. column *Review wanted* is for patches that we need to focus on and that we want to get merged soon
-
-There's one more column *Bugs, CI issues* to make some bugs or problems more visible, it's optinoal.
-
-Patches come all the time, new features, fixes, urgent fixes, RFCs, patch
-iterations. The time of merge depends on the nature of the patches, phase of
-the development cycle so it may take time before the project card gets moved to
-'To review'.  You can continue looking at any patches, replying to mailing list
-with comments or Reviewed-by as usual, it'll be appreciated later when the time
-comes.
-
-Labels are used to give a visual clue of what needs attention:
-
-* green labels
-   * **name ACK** - somebody under 'name' has reviewed the patch and marked the
-     issue as such, though the mailing list review notices are ok too
-   * **test sent** - as a response to 'test needed' red label
-* blue labels
-   * **6.11** - target version number for patches that are postponed to that
-     development cycle, a temporary reminder after code freeze
-* yellow labels
-   * **name COMMENTS** - somebody under 'name' has comments that should be
-     addressed and possibly patches resent
-* red labels
-   * **update** - an update is expected, until then nothing may happen with the
-     patchset until a iteration is sent
-   * **test needed** - patch is fixing something that ought to have fstest
-     testcase, send it and change the label to **test sent**
-
 ## Git commit messages
 
 Follow the standard kernel commit message guidelines.  In addition, please keep
@@ -68,18 +32,18 @@ The github cli tools, which can be found here
   https://github.com/cli/cli/releases
 
 NOTE: You must install this on a box that can open a web browser, because you
-need to get the 0auth token.  This is fairly straightforward
+need to get the 0auth token.  This is fairly straightforward:
 
 1. Install the gh package.
 2. run `gh auth login`.  This will launch the browser to the 0auth stuff, follow
    the prompts.
 3. [OPTIONAL] If you have a headless machine that you do development on, you
-   willl need to copy the 0auth token to this machine.  Copy
+   will need to copy the 0auth token to this machine.  Copy
    ~/.config/gh/hosts.yml to the machine you will be using for development.
 
 ### Git config options
 
-These should be set irregardless of wether you are going to use the helper
+These should be set regardless of whether you are going to use the helper
 scripts, simply copy the contents of configs/gitconfig into your ~/.gitconfig so
 you get properly formatted emails for submitting.
 
@@ -90,9 +54,8 @@ messages are spelled correctly.
 
 ## The btrfs helper scripts
 
-These will generate the github issues for you and send the emails as
-appropriate.  Copy these somewhere and chmod u+x, or simply add the scripts/
-directory to your `$PATH`.
+These will send the emails as appropriate.  Copy these somewhere and chmod u+x,
+or simply add the scripts/ directory to your `$PATH`.
 
 ## Developer workflow
 
@@ -105,12 +68,7 @@ directory to your `$PATH`.
    * For a single patch: `git format-patch -1`
 
 2. `btrfs-send-patches <patches|0001-<whatever>.patch>`.  This will invoke
-   `git send-email` for you, and will generate the github issues with the links
-   for you.
-
-3. If you receive feedback on a patch and the reviewer doesn't move your issue
-   to the "Incoming queue, pending" stage of the project, please do that so
-   people know you are working on those patches.
+   `git send-email` for you
 
 ## Reviewer workflow
 
@@ -122,11 +80,3 @@ directory to your `$PATH`.
 3. Send your reply to the mailinglist.
 
 4. If there are enough reviews, add the patches to branch **for-next**
-
-## Maintainer workflow
-
-1. Tag with the appropriate target tag.  Some big patch series aren't destined
-   for the next merge window, so tags are used so developers know when to expect
-   their patches to be merged.
-
-2. Once the patches are in **for-next** close the issue

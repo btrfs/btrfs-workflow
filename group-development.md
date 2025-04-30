@@ -8,17 +8,24 @@ in the patch submission document still hold true, but we're moving toward a
 system where longterm developers are responsible for checking in their own code
 to the appropriate branch.
 
-The repo for this is
+The repository for this is
 
 [https://github.com/btrfs/linux](https://github.com/btrfs/linux)
 
-We are going to use one main branch
+We using one main branch `for-next`.
 
-- `for-next`: This is code that needs testing and will go into the next merge
-   window.
+- the code has passed testing and does not crash easily (basically anything
+  that would affect other devlopers' work negatively)
+- the branch is updated frequently (new patches, updated patches, removed
+  patches)
+- use as base branch for current development, minor conflicts are expected
+- patches with functional dependency need coordination
 
-Generally speaking developers will be checking things into `for-next` unless
-they're urgent fixes that need to go into Linus quickly.
+This branch is part of `linux-next` testing so build or crash reports get sent.
+
+In addition to `for-next` the branch `misc-next` contains random patches from
+mailinglist for early testing (also part of the `linux-next`). You may get
+reports from testing.
 
 ## tl;dr developer workflow
 

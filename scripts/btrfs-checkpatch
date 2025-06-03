@@ -18,8 +18,9 @@ cd $(dirname $MYPATH)
 	--root $DIR $TMPFILE
 [ $? -ne 0 ] && errors=$(( errors + 1))
 
-cat $TMPFILE | grep -E "^\+" | sed 's/^\+//' | \
-	$DIR/scripts/kernel-doc -v -none -Werror '&STDIN'
+cat $TMPFILE | grep -E "^\+" | sed 's/^\+//' > $TMPFILE.2
+mv $TMPFILE.2 $TMPFILE
+$DIR/scripts/kernel-doc -v -none -Werror $TMPFILE
 [ $? -ne 0 ] && errors=$(( errors + 1))
 
 rm -f $TMPFILE

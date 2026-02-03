@@ -1,23 +1,21 @@
 # Btrfs workflow
 
-Btrfs workflow docs and supporting scripts
+Btrfs workflow docs and supporting scripts.
 
 * [fstests and related workflows](fstests.md).  Workflow for new tests, general
   documentation on how to setup, configure, and use fstests, as well as how to
   write new tests.
 * [Coccinelle](cocci/) coccinelle scripts to look for known bug patterns,
   suggested cleanups, etc
-* scripts/\*.  Supporting scripts for integrating the github issues into our email submission workflow.
+* [Scripts](scripts/) for integrating the github issues into our email submission workflow.
 
 # Group development
 
-We are shifting to a group development model instead of the traditional
-maintainer development model.  Previously we submitted patches based on the
-[patch submission guidelines](patch-submission.md), and then a maintainer would
-merge them when and where they seemed appropriate.  The general guidelines found
-in the patch submission document still hold true, but we're moving toward a
-system where longterm developers are responsible for checking in their own code
-to the appropriate branch.
+The development model partially works as a group and partially as the traditional
+maintainer model. Longterm developers are allowed to commit their changes or
+take responsibility of other people patches. For the rest the fall back is the
+maintainer.  The general guidelines for patch submission quality and style
+still apply.
 
 The repository for this is
 
@@ -36,18 +34,19 @@ This branch is part of `linux-next` testing so build or crash reports get sent.
 
 In addition to `for-next` the branch `misc-next` contains random patches from
 mailinglist for early testing (also part of the `linux-next`). You may get
-reports from testing.
+reports from testing even if you did not add the patch anywhere yourself.
 
 ## tl;dr developer workflow
 
-1. Write code off of your base
-2. Submit the pull request against the branch `ci` (against `btrfs/linux`)
-2.1 Alternatively you can also merge the `ci` branch and then send the pull request
-3. Submit your patches to linux-btrfs@vger.kernel.org.
-4. Test your changes, either on your testing setup or on the github CI
-5. Once the CI run is clean and you have the required `Reviewed-by`'s, run `git
-   reset --merge HEAD~1` to strip off the `ci` branch and merge your code into
-   the base branch with a `git push`.
+1.   Write code off of your base
+2.   Submit the pull request against the branch `ci` (against `btrfs/linux`)
+2.1. Alternatively you can also merge the `ci` branch and then send the pull request
+3.   Send your patches to linux-btrfs@vger.kernel.org.
+4.   Test your changes, either on your testing setup ~~or on the github CI~~
+5.   Once ~~the CI run is clean and~~ you have the required `Reviewed-by`'s,
+     update your local `for-next` branch and append your patches. Then push the
+     changes to the repository, in the best case with fast-forward update.
+     Otherwise look for conflicting changes and resolve them.
 
 ## Who should review my patches?
 
@@ -85,9 +84,9 @@ do a fast forward `git push`.  For fixups utilize `git rebase -i` appropriately.
 6. Optionally re-run CI on the branch by pushing to your own repo and creating a
    PR to trigger the ci run, with the ci branch applied.
 6. `git push origin +<base>:<base>`
-7. Pray you didn't break anything.
+7. Verify you didn't break anything.
 8. Let everybody know you're done force pushing.
-9. Notification about `for-next` update is posted on the `btrfs-for-next` slack channel
+9. Notification about `for-next` update is posted on the `btrfs-for-next` slack channel.
 
 ## What about outside contributors?
 
@@ -139,7 +138,7 @@ linux-btrfs@vger.kernel.org mailinglist.  We're still beholden to email for
 patch submission and review, but these tools will help us track the patch review
 status so we can be more effective with our review time.
 
-Mailinglist: linux-btrfs@vger.kernel.org
+Mailinglist: linux-btrfs@vger.kernel.org (archves https://lore.kernel.org/linux-btrfs/)
 
 ## Git commit messages
 
@@ -147,9 +146,9 @@ Follow the standard kernel commit message guidelines.  In addition, please keep
 the following in mind.
 
 - If you are fixing a regression from a specific commit, it's nice to add the
-  Fixes: tag.  You can accomplish this using the "fixes" alias found in
-  config/gitconfig, using `git fixes <bad commit>` to get the correct format for
-  your Fixes: tag.
+  `Fixes:` tag.  You can accomplish this using the "fixes" alias found in
+  `config/gitconfig`, using `git fixes <bad commit>` to get the correct format for
+  your `Fixes:` tag.
 - For lockdep fixes, crash fixes, warnings, please include the lockdep message
   and stack trace in the commit
 - If you get a spelling mistake flagged by the commit-msg hook that is not a
@@ -163,7 +162,7 @@ the following in mind.
 
 The github cli tools, which can be found here
 
-  https://github.com/cli/cli/releases
+https://github.com/cli/cli/releases
 
 NOTE: You must install this on a box that can open a web browser, because you
 need to get the 0auth token.  This is fairly straightforward:
@@ -178,7 +177,7 @@ need to get the 0auth token.  This is fairly straightforward:
 ### Git config options
 
 These should be set regardless of whether you are going to use the helper
-scripts, simply copy the contents of configs/gitconfig into your ~/.gitconfig so
+scripts, simply copy the contents of `gitconfig` into your `~/.gitconfig` so
 you get properly formatted emails for submitting.
 
 Please run `btrfs-setup-git-hooks <git dir>` to add the appropriate git hooks to
@@ -188,8 +187,8 @@ messages are spelled correctly.
 
 ## The btrfs helper scripts
 
-These will send the emails as appropriate.  Copy these somewhere and chmod u+x,
-or simply add the scripts/ directory to your `$PATH`.
+These will send the emails as appropriate.  Copy these somewhere and `chmod u+x`,
+or simply add the `scripts/` directory to your `$PATH`.
 
 ## Developer workflow
 
@@ -206,11 +205,14 @@ or simply add the scripts/ directory to your `$PATH`.
 
 ## Reviewer workflow
 
-1. Check the project page for anything in the 'Review wanted' queue, pick a series
-   to review.
+The project page or issues are not used for tracking patches anymore. Check the
+mailinglist regularly, respond to patches that change you are familiar with.
+Everybody is encouraged to try to review also code they're not familiar with.
+Proofreading changelogs and comparing that to the code helps to spread the
+knowledge and can also spark feedback and clarifications.
 
-2. Review the patches.
+If there are enough reviews, add the patches to branch **for-next**.
 
-3. Send your reply to the mailinglist.
-
-4. If there are enough reviews, add the patches to branch **for-next**
+It's also OK to review patches that have already landed in `for-next`, just be
+careful in case you're adding your `Reviewed-by` tags not to overwrite other
+changes.
